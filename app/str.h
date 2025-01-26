@@ -46,7 +46,7 @@ char *string_concat(const char *str1, const char *str2);
 void strip(char *str, const int n);
 
 /** print the string until encountering a newline
-*
+ *
  * @param str
  * @param b the first character to print
  */
@@ -74,4 +74,4 @@ bool string_equal(const char *str1, const char *str2);
  */
 void free_string_array(char **array);
 
-#endif //STRING_H
+#endif // STRING_H

@@ -5,4 +5,4 @@ int min(int a, int b);
 
 int max(int a, int b);
 
-#endif //MATH_H
+#endif // MATH_H

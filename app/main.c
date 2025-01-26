@@ -38,6 +38,7 @@ bool change_directory(const char *name, struct status *s)
     s->working_directory = string_copy(getenv("HOME"));
     return true;
   }
+
   char *aux;
   if (s->working_directory[1] != '\0')
   { // Only if working dir != "/"

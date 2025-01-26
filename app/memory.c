@@ -4,9 +4,11 @@
 
 #include "memory.h"
 
-void *memory_alloc(size_t size) {
+void *memory_alloc(size_t size)
+{
   void *ptr = malloc(size);
-  if (ptr == NULL) {
+  if (ptr == NULL)
+  {
     printf("memory_alloc failed\n");
     exit(1);
   }

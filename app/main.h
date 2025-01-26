@@ -9,13 +9,13 @@
 #include "math.h"
 #include "file.h"
 
-struct status {
+struct status
+{
   char *working_directory;
-  };
-
+};
 
 /** if the provided path is valid, change the working directory and return true;
-* else return false */
+ * else return false */
 bool change_directory(const char *path, struct status *s);
 
 void handle_command(char *command, struct status *status);
