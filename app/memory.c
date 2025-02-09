@@ -9,7 +9,7 @@ void *memory_alloc(size_t size)
   void *ptr = malloc(size);
   if (ptr == NULL)
   {
-    printf("memory_alloc failed\n");
+    fprintf(stderr, "memory_alloc failed\n");
     exit(1);
   }
   return ptr;

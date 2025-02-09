@@ -21,41 +21,39 @@ char *string_copy(const char *str)
   return result;
 }
 
+int count_occurrences(const char *str, char c) {
+        int count = 0; 
+        for (int i = 0; str[i] != '\0'; i++) { 
+                if (str[i] == c) count++; 
+        } 
+        return count; 
+}
+
 char **string_split(const char *str, const char delim)
 {
-  // Create the result list
-  int size = 1;
-  int i = 0;
-  while (str[i] != '\0')
-  {
-    if (str[i] == delim)
-      size++;
-    i++;
-  }
-  char **result = memory_alloc((size + 1) * sizeof(char *));
+        int l = string_length(str);
+        int o = count_occurrences(str, delim);
 
-  // Complete the list
-  int p = 0; // the actual world
-  int begin = 0;
-  int wSize = 0; // word size
-  i = 0;
-  while (str[i] != '\0')
-  {
-    if (str[i + 1] == delim || str[i + 1] == '\0')
-    {
-      wSize = i - begin + 1;
-      result[p] = memory_alloc((wSize + 1) * sizeof(char));
-      for (int j = 0; j < wSize; j++)
-        result[p][j] = str[begin + j];
-      result[p][wSize] = '\0';
-      begin = begin + wSize + 1;
-      p++;
-    }
-    i++;
-  }
+        char *cpy = malloc(sizeof(char) * (l+1));
 
-  result[size] = NULL;
-  return result;
+        char **res = malloc(sizeof(char*) * (o+2));
+        res[0] = cpy;
+        int p = o;
+
+        for (int i = l; i>=0; i--) {
+                if (str[i] == delim) {
+                        cpy[i] = '\0';
+                        res[p] = &(cpy[i+1]);
+                        p--;
+                } else {
+                        cpy[i] = str[i];
+                }
+        }
+
+	res[o+1] = NULL;
+
+        return res;
+
 }
 
 char *string_concat(const char *str1, const char *str2)
@@ -120,11 +118,6 @@ bool string_equal(const char *str1, const char *str2)
 
 void free_string_array(char **array)
 {
-  int i = 0;
-  while (array[i] != NULL)
-  {
-    free(array[i]);
-    i++;
-  }
+  free(array[0]);
   free(array);
 }

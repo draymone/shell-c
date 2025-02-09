@@ -81,6 +81,11 @@ bool handle_builtins(char *command, struct status *s) {
   }
   if (string_equal(args[0], "type"))
   {
+    if (args[1] == NULL) {
+      printf("type: No argument\n");
+      goto success;
+    }
+
     // Builtins
     const char *builtins[] = {"exit", "echo", "type", "pwd", "cd"};
     for (int i = 0; i < 5; i++)
@@ -133,31 +138,27 @@ bool handle_builtins(char *command, struct status *s) {
     }
 
     // Relative path
-    if (args[1][0] == '.' || args[1][0] == '~')
+
+    char **movement = string_split(args[1], '/');
+    // Store the old working directory in case the path is invalid
+    char *old_wd = string_copy(s->working_directory);
+
+    int i = 0;
+    while (movement[i] != NULL)
     {
-      char **movement = string_split(args[1], '/');
-      // Store the old working directory in case the path is invalid
-      char *old_wd = string_copy(s->working_directory);
+      if (!change_directory(movement[i], s))
+      { // If the path is invalid, cancel everything
+        printf("cd: %s: No such file or directory\n", args[1]);
+        free(s->working_directory);
+        s->working_directory = old_wd;
 
-      int i = 0;
-      while (movement[i] != NULL)
-      {
-        if (!change_directory(movement[i], s))
-        { // If the path is invalid, cancel everything
-          printf("cd: %s: No such file or directory\n", string_copy(args[1]));
-          free(s->working_directory);
-          s->working_directory = old_wd;
-
-          free_string_array(movement);
-          goto success;
-        }
-        i++;
+        free_string_array(movement);
+        goto success;
       }
-      free_string_array(movement);
-      free(old_wd);
-      goto success;
+      i++;
     }
-
+    free_string_array(movement);
+    free(old_wd);
     goto success;
   }
 
